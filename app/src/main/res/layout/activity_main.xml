@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    android:background="@drawable/background2"
+    tools:context=".MainActivity">
+
+    <Spinner
+        android:id="@+id/spinnerMode"
+        android:layout_width="120dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="6dp"
+        android:background="@drawable/my_spinners"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/generate" />
+
+    <WebView
+        android:id="@+id/textViewStatistics"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="3dp"
+        android:background="@drawable/my_textviews"
+        android:scrollbars="vertical"
+        android:text="TextView"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="gone" />
+
+    <Button
+        android:id="@+id/generate"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginBottom="6dp"
+        android:background="@drawable/my_buttons"
+        android:onClick="eventGenerate"
+        android:text="RND"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/spinner" />
+
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="120dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="6dp"
+        android:background="@drawable/my_spinners"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/layouthints"
+        android:layout_width="320dp"
+        android:layout_height="40dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/my_textviews"
+        android:orientation="horizontal"
+        android:paddingLeft="5dp"
+        android:paddingTop="10dp"
+        android:paddingRight="5dp"
+        app:layout_constraintBottom_toTopOf="@+id/spinner"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TableLayout
+        android:id="@+id/board"
+        android:layout_width="354dp"
+        android:layout_height="470dp"
+        android:layout_marginTop="24dp"
+
+        android:onClick="stopRecord"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/confirm"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/startRecord" />
+
+    <Button
+        android:id="@+id/startRecord"
+        android:layout_width="320dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/my_buttons"
+        android:onClick="startRecord"
+        android:orientation="horizontal"
+        android:text="START"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/shortStat" />
+
+    <Button
+        android:id="@+id/reject"
+        android:layout_width="133dp"
+        android:layout_height="73dp"
+        android:layout_alignTop="@+id/board"
+        android:layout_marginTop="220dp"
+        android:layout_marginEnd="32dp"
+        android:backgroundTint="#F44336"
+        android:onClick="reject"
+        android:text="Reject"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/confirm"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/changecategory"
+        android:layout_width="133dp"
+        android:layout_height="73dp"
+        android:layout_alignTop="@+id/board"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="32dp"
+        android:backgroundTint="#F44336"
+        android:onClick="changeCategory"
+        android:text="Change Category"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.507"
+        app:layout_constraintStart_toEndOf="@+id/confirm"
+        app:layout_constraintTop_toBottomOf="@+id/reject" />
+
+    <Button
+        android:id="@+id/addtwoseconds"
+        android:layout_width="133dp"
+        android:layout_height="73dp"
+        android:layout_alignTop="@+id/board"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="32dp"
+        android:backgroundTint="#F44336"
+        android:onClick="addTwoSeconds"
+        android:text="Add Two Seconds"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.507"
+        app:layout_constraintStart_toEndOf="@+id/confirm"
+        app:layout_constraintTop_toBottomOf="@+id/changecategory" />
+
+    <Button
+        android:id="@+id/confirm"
+        android:layout_width="133dp"
+        android:layout_height="73dp"
+        android:layout_alignTop="@+id/board"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="220dp"
+        android:backgroundTint="#8BC34A"
+        android:onClick="confirm"
+        android:text="Confirm"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/showStat"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignTop="@+id/board"
+        android:layout_marginStart="12dp"
+        android:layout_marginBottom="6dp"
+        android:background="@drawable/my_buttons"
+        android:onClick="showStat"
+        android:text="Stat"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/spinnerMode" />
+
+    <WebView
+        android:id="@+id/shortStat"
+        android:layout_width="309dp"
+        android:layout_height="139dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/my_textviews"
+        android:singleLine="false"
+        android:text="TextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
