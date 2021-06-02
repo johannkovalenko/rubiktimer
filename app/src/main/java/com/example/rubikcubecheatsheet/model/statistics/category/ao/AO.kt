@@ -18,7 +18,7 @@ abstract class AO (protected val data : Data)
 
     public val percentiles = intArrayOf(
             5, 6, 7, 8, 9, 10, 11, 12,
-            15, 17, 20, 23, 28,
+            15, 20, 25, 30,
             35, 45,
             60, 75, 90, 105, 120, 130, 140, 150,
             200, 300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200,

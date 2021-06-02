@@ -9,9 +9,9 @@ import com.example.rubikcubecheatsheet.model.statistics.category.ao.*
 
 class Category {
     private val entries         = mutableListOf<Entry>()
-    private val aoData            = listOf(Data(5, 0, entries), Data(12, 0, entries), Data(100, 7, entries))
+    private val aoData            = listOf(Data(5, 0, entries), Data(12, 0, entries), Data(100, 5, entries), Data(1000, 50, entries))
 
-    private var aoList          = arrayOf(AO5(aoData[0]), AO12(aoData[1]), AO100(aoData[2]))
+    private var aoList          = arrayOf(AO5(aoData[0]), AO12(aoData[1]), AO100(aoData[2]), AO1000(aoData[3]))
 
     private val printAO         = PrintAO(aoData, aoList)
     private val recordProgression = RecordProgression(aoData)

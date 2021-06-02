@@ -175,8 +175,8 @@
 
     <WebView
         android:id="@+id/shortStat"
-        android:layout_width="309dp"
-        android:layout_height="139dp"
+        android:layout_width="323dp"
+        android:layout_height="168dp"
         android:layout_marginTop="16dp"
         android:background="@drawable/my_textviews"
         android:singleLine="false"

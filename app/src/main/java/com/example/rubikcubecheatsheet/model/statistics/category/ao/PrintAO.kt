@@ -10,7 +10,7 @@ class PrintAO (private val aoData : List<Data>, private val aoList : Array<AO>){
     public fun percentilesHeader(sb : StringBuilder){
 
         sb.append("<tr>")
-        sb.append("<th>Date</th><th>Rec</th><th>ao5</th><th>ao12</th><th>ao100</th>")
+        sb.append("<th>Date</th><th>Rec</th><th>ao5</th><th>ao12</th><th>ao100</th><th>1000</th>")
 
         val intAllTimeTop = aoData[2].allTimeTop.toInt() // hundred
         var counter = 0
@@ -35,8 +35,12 @@ class PrintAO (private val aoData : List<Data>, private val aoList : Array<AO>){
         sb.append("<td ${template}rgb(0, 204, 0)'>${day100.top.round()}</td>")
 
         for (i in aoList.indices) {
-            val day = aoData[i].topPerDay[date]!!
-            sb.append("<td ${template}${aoList[i].colorScheme(day.dnf)}'>${day.avg.round()}</td>")
+            if (aoData[i].topPerDay.containsKey(date)) {
+                val day = aoData[i].topPerDay[date]!!
+                sb.append("<td ${template}${aoList[i].colorScheme(day.dnf)}'>${day.avg.round()}</td>")
+            }
+            else
+                sb.append("<td>-</td>")
         }
 
         val intAllTimeTop = aoData[2].allTimeTop.toInt() // hundred
