@@ -8,7 +8,7 @@ import java.time.LocalDateTime
 import java.time.Period
 
 object Extract {
-    private val beforeDate = LocalDateTime.now().minus(Period.ofMonths(2))
+    private val beforeDate = LocalDateTime.now().minus(Period.ofWeeks(2))
 
     public fun Entry (line : String) : Entry? {            val split = line.split('\t')
 
@@ -35,7 +35,7 @@ object Extract {
 
     private fun getGroupedDate(date : LocalDateTime) : LocalDateTime {
         return if (date.isBefore(beforeDate))
-            LocalDateTime.of(date.year, date.month, 1, 0, 0, 0)
+            LocalDateTime.of(date.year, date.month, (date.dayOfMonth / 7) * 7 + 1, 0, 0, 0)
         else
             date
     }
