@@ -3,6 +3,8 @@ package com.example.rubikcubecheatsheet.model.statistics.category.ao.day
 import java.time.LocalDateTime
 
 public class Day {
+    var topAvgEver = Float.MAX_VALUE
+    var topEntryEver = Float.MAX_VALUE
     var top = Float.MAX_VALUE
     var amount = 0
     var sum = 0f

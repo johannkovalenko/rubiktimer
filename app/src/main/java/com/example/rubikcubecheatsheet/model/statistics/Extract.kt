@@ -10,7 +10,8 @@ import java.time.Period
 object Extract {
     private val beforeDate = LocalDateTime.now().minus(Period.ofWeeks(2))
 
-    public fun Entry (line : String) : Entry? {            val split = line.split('\t')
+    public fun Entry (line : String) : Entry? {
+        val split = line.split('\t')
 
         if (split.size < 3) return null
 

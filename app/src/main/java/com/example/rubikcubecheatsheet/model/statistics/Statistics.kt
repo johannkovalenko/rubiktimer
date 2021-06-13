@@ -6,6 +6,7 @@ import com.example.rubikcubecheatsheet.model.Entry
 import com.example.rubikcubecheatsheet.model.enumerations.Mode
 import com.example.rubikcubecheatsheet.model.statistics.category.Category
 import java.io.File
+import java.time.LocalDateTime
 
 class Statistics(private val cubeMode: CubeMode, folder: File?) {
     private val categories = mutableMapOf<Mode, Category>()
@@ -22,6 +23,10 @@ class Statistics(private val cubeMode: CubeMode, folder: File?) {
 
     public fun add(entry : Entry) {
         categories[entry.mode]?.add(entry)
+    }
+
+    public fun getDateTimeOfLastEntry() : LocalDateTime {
+        return categories[cubeMode.mode]!!.getDateTimeOfLastEntry()
     }
 
     public fun print(sb: StringBuilder) {

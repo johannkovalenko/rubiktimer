@@ -11,6 +11,7 @@ import java.io.File
 import java.time.Duration
 import java.time.Instant
 import java.time.LocalDateTime
+import java.time.Period
 import java.time.format.DateTimeFormatter
 
 class Timer (private val folder: File?, private val cubeMode: CubeMode, private val statistics: Statistics) {

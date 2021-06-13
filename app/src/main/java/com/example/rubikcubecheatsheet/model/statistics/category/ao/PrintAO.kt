@@ -59,6 +59,16 @@ class PrintAO (private val aoData : List<Data>, private val aoList : Array<AO>){
             }
 
         sb.append("<td>${day100.amount}</td>")
+
+        sb.append("<td>${aoData[2].topPerDay[date]!!.topEntryEver.round()}</td>")
+        for (i in aoList.indices) {
+            if (aoData[i].topPerDay.containsKey(date)) {
+                val day = aoData[i].topPerDay[date]!!
+                sb.append("<td>${day.topAvgEver.round()}</td>")
+            }
+            else
+                sb.append("<td>-</td>")
+        }
         sb.append("</tr>")
     }
 }

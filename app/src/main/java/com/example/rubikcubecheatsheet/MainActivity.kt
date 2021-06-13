@@ -22,6 +22,7 @@ import com.example.rubikcubecheatsheet.model.timer.Timer
 import com.example.rubikcubecheatsheet.view.hints.HintImages
 import com.example.rubikcubecheatsheet.view.hints.ShowHide
 import com.example.rubikcubecheatsheet.view.labels.Labels
+import java.time.LocalDateTime
 import java.util.*
 import java.util.stream.Collectors
 
@@ -95,7 +96,13 @@ class MainActivity : AppCompatActivity() {
     fun reject(view: View) {
         if (timeMode != TimeMode.CONFIRM) return
         timeMode = TimeMode.OFF
-        timer!!.reject()
+
+        val lastEntry = statistics!!.getDateTimeOfLastEntry()
+        val beforeTime = LocalDateTime.now().minusMinutes(30)
+
+        if (lastEntry.isAfter(beforeTime))
+            timer!!.reject()
+
         hideConfirmButton("Rejected")
         shortStatistics!!.write()
     }
@@ -140,6 +147,15 @@ class MainActivity : AppCompatActivity() {
         val change = findViewById<Button>(R.id.changecategory)
         val addTwo = findViewById<Button>(R.id.addtwoseconds)
         start.text = message
+
+        val lastEntry = statistics!!.getDateTimeOfLastEntry()
+        val beforeTime = LocalDateTime.now().minusMinutes(30)
+
+        if (lastEntry.isBefore(beforeTime))
+            reject.text = "Training"
+        else
+            reject.text = "Reject"
+
         confirm.visibility = View.VISIBLE
         reject.visibility = View.VISIBLE
         change.visibility = View.VISIBLE

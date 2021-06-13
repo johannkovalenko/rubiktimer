@@ -1,11 +1,13 @@
 package com.example.rubikcubecheatsheet.model.statistics.category
 
+import android.text.TextUtils.lastIndexOf
 import com.example.rubikcubecheatsheet.model.Entry
 import com.example.rubikcubecheatsheet.model.enumerations.Mode
 import com.example.rubikcubecheatsheet.model.statistics.category.ao.day.Day
 import com.example.rubikcubecheatsheet.model.statistics.RecordProgression
 import com.example.rubikcubecheatsheet.model.statistics.Top100
 import com.example.rubikcubecheatsheet.model.statistics.category.ao.*
+import java.time.LocalDateTime
 
 class Category {
     private val entries         = mutableListOf<Entry>()
@@ -14,7 +16,7 @@ class Category {
     private var aoList          = arrayOf(AO5(aoData[0]), AO12(aoData[1]), AO100(aoData[2]), AO1000(aoData[3]))
 
     private val printAO         = PrintAO(aoData, aoList)
-    private val recordProgression = RecordProgression(aoData)
+    //private val recordProgression = RecordProgression(aoData)
     private val top100 = Top100()
 
     public fun add(entry: Entry) {
@@ -26,7 +28,11 @@ class Category {
         if (entry.dnf || entry.mode == Mode.Training) return
 
         top100.check(entry)
-        recordProgression.check(entry)
+        //recordProgression.check(entry)
+    }
+
+    public fun getDateTimeOfLastEntry() : LocalDateTime {
+        return entries.get(entries.lastIndex).whenDate
     }
 
     public fun printShort(sb: StringBuilder) {
@@ -52,7 +58,7 @@ class Category {
         sb.append("</table>")
 
         top100.print(sb, aoData[2].currentSeconds) //hundred
-        recordProgression.print(sb)
+        //recordProgression.print(sb)
         sb.append("<br><br>")
     }
 

@@ -61,6 +61,9 @@ abstract class AO (protected val data : Data)
         if (!entry.dnf && entry.seconds < data.allTimeTop)
             data.allTimeTop = entry.seconds
 
+        if (!entry.dnf && entry.seconds < top.top)
+            top.top = entry.seconds
+
         data.currentSeconds.add(entry.seconds)
 
         current.sum += entry.seconds
@@ -100,6 +103,8 @@ abstract class AO (protected val data : Data)
             data.topPerDay[dataStr] = Day()
 
         data.topPerDay[dataStr]!!.amount++
+        data.topPerDay[dataStr]!!.topAvgEver = top.avg
+        data.topPerDay[dataStr]!!.topEntryEver = top.top
 
         if (entry.seconds != 0f)
             if (entry.seconds < data.topPerDay[dataStr]!!.top)
