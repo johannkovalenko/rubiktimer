@@ -1,16 +1,17 @@
 package com.example.rubikcubecheatsheet.model.statistics.category
 
-import android.text.TextUtils.lastIndexOf
+import android.util.Log
 import com.example.rubikcubecheatsheet.model.Entry
 import com.example.rubikcubecheatsheet.model.enumerations.Mode
 import com.example.rubikcubecheatsheet.model.statistics.category.ao.day.Day
-import com.example.rubikcubecheatsheet.model.statistics.RecordProgression
 import com.example.rubikcubecheatsheet.model.statistics.Top100
 import com.example.rubikcubecheatsheet.model.statistics.category.ao.*
 import java.time.LocalDateTime
 
 class Category {
     private val entries         = mutableListOf<Entry>()
+    private val mapDayCount     = mutableMapOf<LocalDateTime, Int>()
+
     private val aoData            = listOf(Data(5, 0, entries), Data(12, 0, entries), Data(100, 5, entries), Data(1000, 50, entries))
 
     private var aoList          = arrayOf(AO5(aoData[0]), AO12(aoData[1]), AO100(aoData[2]), AO1000(aoData[3]))
@@ -21,6 +22,11 @@ class Category {
 
     public fun add(entry: Entry) {
         entries.add(entry)
+
+        if (!mapDayCount.containsKey(entry.whenDate))
+            mapDayCount.put(entry.whenDate, 1)
+        else
+            mapDayCount[entry.whenDate] = mapDayCount[entry.whenDate]!! + 1
 
         for (ao : AO in aoList)
             ao.add(entry)
@@ -45,16 +51,20 @@ class Category {
     }
 
     public fun print(sb: StringBuilder, header : String) {
-        sb.append("<h1>${header}</h1>")
+        sb.append("<h1>${header} Day " + mapDayCount.size +"</h1>")
         sb.append("<table>")
 
         printAO.percentilesHeader(sb)
 
-        for ((date, day100) in aoData[2].topPerDay) { //hundred
-            cumulateAndPercent(day100.percentiles)
+        cumulateAndPercent(aoData[2].topPerDay["current"]!!.percentiles)
+        printAO.percentilesBody(sb, "current")
 
-            printAO.percentilesBody(sb, date)
+        val dateList : List<String> = aoData[2].topPerDay.keys.toList()
+        for (index in dateList.size - 1 downTo 2) {
+            cumulateAndPercent(aoData[2].topPerDay[dateList[index]]!!.percentiles)
+            printAO.percentilesBody(sb, dateList[index])
         }
+
         sb.append("</table>")
 
         top100.print(sb, aoData[2].currentSeconds) //hundred
