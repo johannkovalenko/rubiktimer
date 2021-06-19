@@ -38,7 +38,7 @@ class Category {
     }
 
     public fun getDateTimeOfLastEntry() : LocalDateTime {
-        return entries.get(entries.lastIndex).whenDate
+        return entries.get(entries.lastIndex).dateAndTime
     }
 
     public fun printShort(sb: StringBuilder) {
