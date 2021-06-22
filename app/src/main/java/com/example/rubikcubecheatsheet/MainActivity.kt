@@ -19,6 +19,8 @@ import com.example.rubikcubecheatsheet.model.data.Data
 import com.example.rubikcubecheatsheet.model.enumerations.Mode
 import com.example.rubikcubecheatsheet.model.statistics.Statistics
 import com.example.rubikcubecheatsheet.model.timer.Timer
+import com.example.rubikcubecheatsheet.view.confirmbuttons.ConfirmButtons
+import com.example.rubikcubecheatsheet.view.dropdowns.DropDowns
 import com.example.rubikcubecheatsheet.view.hints.HintImages
 import com.example.rubikcubecheatsheet.view.hints.ShowHide
 import com.example.rubikcubecheatsheet.view.labels.Labels
@@ -31,26 +33,22 @@ class MainActivity : AppCompatActivity() {
         ON, OFF, CONFIRM
     }
 
-    private var spinner: Spinner? = null
-    private var spinnerMode: Spinner? = null
     private var timer: Timer? = null
-    private var cubeMode = CubeMode(Mode.Speed)
+    private val cubeMode = CubeMode(Mode.Speed)
     private var statistics: Statistics? = null
     private var timeMode = TimeMode.OFF
     private var shortStatistics: ShortStatistics? = null
     private var generator: Generator? = null
     private var search: Search? = null
+    private var confirmButtons: ConfirmButtons? = null
+    private var dropDowns: DropDowns? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         hideTitleBar()
         setContentView(R.layout.activity_main)
-        this.spinner = findViewById(R.id.spinner)
-        this.spinnerMode = findViewById(R.id.spinnerMode)
 
-        //findViewById<WebView>(R.id.textViewStatistics).setMovementMethod(ScrollingMovementMethod())
-        spinnerSetListener()
-        spinnerModeSetListener()
+
         val labels = Labels(this)
         labels.Create(findViewById(R.id.board))
         val data: List<DB> = ArrayList()
@@ -60,12 +58,14 @@ class MainActivity : AppCompatActivity() {
         Data().Prepare(this.resources, data, data_dict)
         generator = Generator(data, labels, hintImages)
         search = Search(data_dict, labels, hintImages)
-        fillDropdown(ArrayList(data_dict.keys), spinner)
-        fillDropdown(EnumSet.allOf(Mode::class.java).stream().map { obj: Mode -> obj.name }.collect(Collectors.toList()), spinnerMode)
+
         statistics = Statistics(cubeMode, getExternalFilesDir(null))
         shortStatistics = ShortStatistics(findViewById(R.id.shortStat), statistics)
         shortStatistics!!.write()
         timer = Timer(getExternalFilesDir(null), cubeMode, statistics!!)
+
+        this.confirmButtons = ConfirmButtons(this, statistics!!)
+        this.dropDowns = DropDowns(this, data_dict, search!!, cubeMode, shortStatistics!!)
     }
 
     fun startRecord(view: View) {
@@ -75,7 +75,7 @@ class MainActivity : AppCompatActivity() {
         timer!!.start()
         timeMode = TimeMode.ON
         start.visibility = View.INVISIBLE
-        hideConfirmButton("Running")
+        confirmButtons!!.hide("Running")
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         findViewById<ConstraintLayout>(R.id.mainLayout).setBackgroundColor(Color.RED)
     }
@@ -88,7 +88,7 @@ class MainActivity : AppCompatActivity() {
         }
         timeMode = TimeMode.CONFIRM
         start.visibility = View.VISIBLE
-        showConfirmButton(timer!!.stop())
+        confirmButtons!!.show(timer!!.stop())
         window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         findViewById<ConstraintLayout>(R.id.mainLayout).setBackgroundResource(R.drawable.background2)
     }
@@ -103,7 +103,7 @@ class MainActivity : AppCompatActivity() {
         if (lastEntry.isAfter(beforeTime))
             timer!!.reject()
 
-        hideConfirmButton("Rejected")
+        confirmButtons!!.hide("Rejected")
         shortStatistics!!.write()
     }
 
@@ -111,7 +111,7 @@ class MainActivity : AppCompatActivity() {
         if (timeMode != TimeMode.CONFIRM) return
         timeMode = TimeMode.OFF
         timer!!.confirm(0f, false)
-        hideConfirmButton("ChangedCategory")
+        confirmButtons!!.hide("ChangedCategory")
         shortStatistics!!.write()
     }
 
@@ -119,7 +119,7 @@ class MainActivity : AppCompatActivity() {
         if (timeMode != TimeMode.CONFIRM) return
         timeMode = TimeMode.OFF
         timer!!.confirm(2f, true)
-        hideConfirmButton("Added Two")
+        confirmButtons!!.hide("Added Two")
         shortStatistics!!.write()
     }
 
@@ -127,7 +127,7 @@ class MainActivity : AppCompatActivity() {
         if (timeMode != TimeMode.CONFIRM) return
         timeMode = TimeMode.OFF
         timer!!.confirm(0f, true)
-        hideConfirmButton("Confirmed")
+        confirmButtons!!.hide("Confirmed")
         shortStatistics!!.write()
     }
 
@@ -140,41 +140,6 @@ class MainActivity : AppCompatActivity() {
         start.visibility = if(start.visibility == View.INVISIBLE) View.VISIBLE else View.INVISIBLE
     }
 
-    private fun showConfirmButton(message: String) {
-        val start = findViewById<Button>(R.id.startRecord)
-        val confirm = findViewById<Button>(R.id.confirm)
-        val reject = findViewById<Button>(R.id.reject)
-        val change = findViewById<Button>(R.id.changecategory)
-        val addTwo = findViewById<Button>(R.id.addtwoseconds)
-        start.text = message
-
-        val lastEntry = statistics!!.getDateTimeOfLastEntry()
-        val beforeTime = LocalDateTime.now().minusMinutes(30)
-
-        if (lastEntry.isBefore(beforeTime))
-            reject.text = "Training"
-        else
-            reject.text = "Reject"
-
-        confirm.visibility = View.VISIBLE
-        reject.visibility = View.VISIBLE
-        change.visibility = View.VISIBLE
-        addTwo.visibility = View.VISIBLE
-    }
-
-    private fun hideConfirmButton(message: String) {
-        val start = findViewById<Button>(R.id.startRecord)
-        val confirm = findViewById<Button>(R.id.confirm)
-        val reject = findViewById<Button>(R.id.reject)
-        val change = findViewById<Button>(R.id.changecategory)
-        val addTwo = findViewById<Button>(R.id.addtwoseconds)
-        start.text = message
-        confirm.visibility = View.INVISIBLE
-        reject.visibility = View.INVISIBLE
-        change.visibility = View.INVISIBLE
-        addTwo.visibility = View.INVISIBLE
-    }
-
     fun hideTitleBar() {
         requestWindowFeature(Window.FEATURE_NO_TITLE)
         this.window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
@@ -184,35 +149,5 @@ class MainActivity : AppCompatActivity() {
     fun eventGenerate(view: View) {
         findViewById<LinearLayout>(R.id.layouthints).visibility = View.INVISIBLE
         generator!!.Run()
-    }
-
-    fun fillDropdown(keys: List<String>, spinner: Spinner?) {
-        val arrayAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, keys)
-        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        spinner!!.adapter = arrayAdapter
-    }
-
-    fun spinnerSetListener() {
-        spinner!!.onItemSelectedListener = object : OnItemSelectedListener {
-            override fun onItemSelected(adapterView: AdapterView<*>?, view: View, i: Int, l: Long) {
-                findViewById<LinearLayout>(R.id.layouthints).visibility = View.VISIBLE
-                val item = spinner!!.selectedItem as String
-                search!!.Run(item)
-            }
-
-            override fun onNothingSelected(adapterView: AdapterView<*>?) {}
-        }
-    }
-
-    fun spinnerModeSetListener() {
-        spinnerMode!!.onItemSelectedListener = object : OnItemSelectedListener {
-            override fun onItemSelected(adapterView: AdapterView<*>?, view: View, i: Int, l: Long) {
-                val item = spinnerMode!!.selectedItem as String
-                cubeMode.set(item)
-                shortStatistics!!.write()
-            }
-
-            override fun onNothingSelected(adapterView: AdapterView<*>?) {}
-        }
     }
 }
