@@ -2,30 +2,21 @@ package com.example.rubikcubecheatsheet.view.confirmbuttons
 
 import android.view.View
 import android.widget.Button
-import android.widget.Spinner
 import androidx.appcompat.app.AppCompatActivity
 import com.example.rubikcubecheatsheet.R
-import com.example.rubikcubecheatsheet.model.statistics.Statistics
-import java.time.LocalDateTime
+import com.example.rubikcubecheatsheet.controller.Controller
 
-class ConfirmButtons (val mainForm : AppCompatActivity, val statistics: Statistics) {
+class ConfirmButtons (val mainForm : AppCompatActivity, val controller: Controller) {
+    private val start   = mainForm.findViewById<Button>(R.id.startRecord)
+    private val confirm = mainForm.findViewById<Button>(R.id.confirm)
+    private val reject  = mainForm.findViewById<Button>(R.id.reject)
+    private val change  = mainForm.findViewById<Button>(R.id.changecategory)
+    private val addTwo  = mainForm.findViewById<Button>(R.id.addtwoseconds)
 
     public fun show(message: String) {
-        val start   = mainForm.findViewById<Button>(R.id.startRecord)
-        val confirm = mainForm.findViewById<Button>(R.id.confirm)
-        val reject  = mainForm.findViewById<Button>(R.id.reject)
-        val change  = mainForm.findViewById<Button>(R.id.changecategory)
-        val addTwo  = mainForm.findViewById<Button>(R.id.addtwoseconds)
         start.text = message
 
-        val lastEntry = statistics!!.getDateTimeOfLastEntry()
-        val beforeTime = LocalDateTime.now().minusMinutes(30)
-
-        if (lastEntry.isBefore(beforeTime))
-            reject.text = "Training"
-        else
-            reject.text = "Reject"
-
+        reject.text = controller.trainingOrReject()
         confirm.visibility = View.VISIBLE
         reject.visibility = View.VISIBLE
         change.visibility = View.VISIBLE
@@ -33,11 +24,6 @@ class ConfirmButtons (val mainForm : AppCompatActivity, val statistics: Statisti
     }
 
     public fun hide(message: String) {
-        val start   = mainForm.findViewById<Button>(R.id.startRecord)
-        val confirm = mainForm.findViewById<Button>(R.id.confirm)
-        val reject  = mainForm.findViewById<Button>(R.id.reject)
-        val change  = mainForm.findViewById<Button>(R.id.changecategory)
-        val addTwo  = mainForm.findViewById<Button>(R.id.addtwoseconds)
         start.text = message
         confirm.visibility = View.INVISIBLE
         reject.visibility = View.INVISIBLE

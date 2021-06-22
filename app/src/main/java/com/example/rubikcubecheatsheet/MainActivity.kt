@@ -5,20 +5,16 @@ import android.os.Bundle
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
+import android.webkit.WebView
 import android.widget.*
-import android.widget.AdapterView.OnItemSelectedListener
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import com.example.rubikcubecheatsheet.controller.Controller
 import com.example.rubikcubecheatsheet.controller.Generator
 import com.example.rubikcubecheatsheet.controller.Search
-import com.example.rubikcubecheatsheet.controller.statistics.ShortStatistics
 import com.example.rubikcubecheatsheet.controller.statistics.ShowHideStat
-import com.example.rubikcubecheatsheet.model.CubeMode
 import com.example.rubikcubecheatsheet.model.data.DB
 import com.example.rubikcubecheatsheet.model.data.Data
-import com.example.rubikcubecheatsheet.model.enumerations.Mode
-import com.example.rubikcubecheatsheet.model.statistics.Statistics
-import com.example.rubikcubecheatsheet.model.timer.Timer
 import com.example.rubikcubecheatsheet.view.confirmbuttons.ConfirmButtons
 import com.example.rubikcubecheatsheet.view.dropdowns.DropDowns
 import com.example.rubikcubecheatsheet.view.hints.HintImages
@@ -26,28 +22,21 @@ import com.example.rubikcubecheatsheet.view.hints.ShowHide
 import com.example.rubikcubecheatsheet.view.labels.Labels
 import java.time.LocalDateTime
 import java.util.*
-import java.util.stream.Collectors
 
 class MainActivity : AppCompatActivity() {
-    enum class TimeMode {
-        ON, OFF, CONFIRM
-    }
 
-    private var timer: Timer? = null
-    private val cubeMode = CubeMode(Mode.Speed)
-    private var statistics: Statistics? = null
-    private var timeMode = TimeMode.OFF
-    private var shortStatistics: ShortStatistics? = null
     private var generator: Generator? = null
     private var search: Search? = null
     private var confirmButtons: ConfirmButtons? = null
     private var dropDowns: DropDowns? = null
 
+    private var controller : Controller? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         hideTitleBar()
         setContentView(R.layout.activity_main)
-
 
         val labels = Labels(this)
         labels.Create(findViewById(R.id.board))
@@ -58,91 +47,96 @@ class MainActivity : AppCompatActivity() {
         Data().Prepare(this.resources, data, data_dict)
         generator = Generator(data, labels, hintImages)
         search = Search(data_dict, labels, hintImages)
+        this.controller = Controller(getExternalFilesDir(null))
 
-        statistics = Statistics(cubeMode, getExternalFilesDir(null))
-        shortStatistics = ShortStatistics(findViewById(R.id.shortStat), statistics)
-        shortStatistics!!.write()
-        timer = Timer(getExternalFilesDir(null), cubeMode, statistics!!)
+        val temp : WebView = findViewById(R.id.shortStat)
+        temp.loadDataWithBaseURL(null, controller!!.getShortStatistics().toString(), "text/html", "utf-8", null)
 
-        this.confirmButtons = ConfirmButtons(this, statistics!!)
-        this.dropDowns = DropDowns(this, data_dict, search!!, cubeMode, shortStatistics!!)
+
+        this.confirmButtons = ConfirmButtons(this, controller!!)
+        this.dropDowns = DropDowns(this, controller!!, data_dict, search!!)
     }
 
     fun startRecord(view: View) {
-        val start = findViewById<Button>(R.id.startRecord)
+        val goOn : Boolean = controller!!.startRecord()
 
-        if (timeMode != TimeMode.OFF) return
-        timer!!.start()
-        timeMode = TimeMode.ON
-        start.visibility = View.INVISIBLE
-        confirmButtons!!.hide("Running")
-        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-        findViewById<ConstraintLayout>(R.id.mainLayout).setBackgroundColor(Color.RED)
+        if (goOn){
+            val start = findViewById<Button>(R.id.startRecord)
+            start.visibility = View.INVISIBLE
+            confirmButtons!!.hide("Running")
+            window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+            findViewById<ConstraintLayout>(R.id.mainLayout).setBackgroundColor(Color.RED)
+        }
+
     }
 
     fun stopRecord(view: View) {
         val start = findViewById<Button>(R.id.startRecord)
-        if (timeMode != TimeMode.ON) {
+        if (controller!!.timeMode != TimeMode.ON) {
             ShowHide.run(this)
             return
         }
-        timeMode = TimeMode.CONFIRM
+        controller!!.timeMode = TimeMode.CONFIRM
         start.visibility = View.VISIBLE
-        confirmButtons!!.show(timer!!.stop())
+        confirmButtons!!.show(controller!!.GetTimer().stop())
         window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         findViewById<ConstraintLayout>(R.id.mainLayout).setBackgroundResource(R.drawable.background2)
     }
 
     fun reject(view: View) {
-        if (timeMode != TimeMode.CONFIRM) return
-        timeMode = TimeMode.OFF
+        if (controller!!.timeMode != TimeMode.CONFIRM) return
+        controller!!.timeMode = TimeMode.OFF
 
-        val lastEntry = statistics!!.getDateTimeOfLastEntry()
+        val lastEntry = controller!!.GetStatistics().getDateTimeOfLastEntry()
         val beforeTime = LocalDateTime.now().minusMinutes(30)
 
         if (lastEntry.isAfter(beforeTime))
-            timer!!.reject()
+            controller!!.GetTimer().reject()
 
         confirmButtons!!.hide("Rejected")
-        shortStatistics!!.write()
+        val temp : WebView = findViewById(R.id.shortStat)
+        temp.loadDataWithBaseURL(null, controller!!.getShortStatistics().toString(), "text/html", "utf-8", null)
     }
 
     fun changeCategory(view: View) {
-        if (timeMode != TimeMode.CONFIRM) return
-        timeMode = TimeMode.OFF
-        timer!!.confirm(0f, false)
+        if (controller!!.timeMode != TimeMode.CONFIRM) return
+        controller!!.timeMode = TimeMode.OFF
+        controller!!.GetTimer().confirm(0f, false)
         confirmButtons!!.hide("ChangedCategory")
-        shortStatistics!!.write()
+        val temp : WebView = findViewById(R.id.shortStat)
+        temp.loadDataWithBaseURL(null, controller!!.getShortStatistics().toString(), "text/html", "utf-8", null)
     }
 
     fun addTwoSeconds(view: View) {
-        if (timeMode != TimeMode.CONFIRM) return
-        timeMode = TimeMode.OFF
-        timer!!.confirm(2f, true)
+        if (controller!!.timeMode != TimeMode.CONFIRM) return
+        controller!!.timeMode = TimeMode.OFF
+        controller!!.GetTimer().confirm(2f, true)
         confirmButtons!!.hide("Added Two")
-        shortStatistics!!.write()
+        val temp : WebView = findViewById(R.id.shortStat)
+        temp.loadDataWithBaseURL(null, controller!!.getShortStatistics().toString(), "text/html", "utf-8", null)
     }
 
     fun confirm(view: View) {
-        if (timeMode != TimeMode.CONFIRM) return
-        timeMode = TimeMode.OFF
-        timer!!.confirm(0f, true)
+        if (controller!!.timeMode != TimeMode.CONFIRM) return
+        controller!!.timeMode = TimeMode.OFF
+        controller!!.GetTimer().confirm(0f, true)
         confirmButtons!!.hide("Confirmed")
-        shortStatistics!!.write()
+        val temp : WebView = findViewById(R.id.shortStat)
+        temp.loadDataWithBaseURL(null, controller!!.getShortStatistics().toString(), "text/html", "utf-8", null)
     }
 
     fun showStat(view: View) {
         val generateButton = findViewById<Button>(R.id.generate)
         val start = findViewById<Button>(R.id.startRecord)
-        ShowHideStat.Run(findViewById(R.id.textViewStatistics), statistics, cubeMode)
+        ShowHideStat.Run(findViewById(R.id.textViewStatistics), controller!!.GetStatistics())
 
         generateButton.visibility = if (generateButton.visibility == View.INVISIBLE) View.VISIBLE else View.INVISIBLE
         start.visibility = if(start.visibility == View.INVISIBLE) View.VISIBLE else View.INVISIBLE
     }
 
     fun hideTitleBar() {
-        requestWindowFeature(Window.FEATURE_NO_TITLE)
-        this.window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
+        super.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
         supportActionBar!!.hide()
     }
 

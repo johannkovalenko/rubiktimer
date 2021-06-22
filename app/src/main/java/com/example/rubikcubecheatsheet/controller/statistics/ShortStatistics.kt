@@ -5,10 +5,10 @@ import com.example.rubikcubecheatsheet.model.scramble.Scramble
 import com.example.rubikcubecheatsheet.model.statistics.Statistics
 import kotlin.random.Random
 
-class ShortStatistics(var webView: WebView, var statistics: Statistics?) {
+class ShortStatistics(var statistics: Statistics?) {
     val scramble = Scramble(20)
 
-    public fun write() {
+    public fun write() : StringBuilder {
         val sb = StringBuilder()
         sb.append("<html>")
         sb.append("<style>")
@@ -24,7 +24,8 @@ class ShortStatistics(var webView: WebView, var statistics: Statistics?) {
         sb.append("</body>")
         sb.append("</html>")
 
-        webView.loadDataWithBaseURL(null, sb.toString(), "text/html", "utf-8", null)
+
+        return sb
     }
 
 

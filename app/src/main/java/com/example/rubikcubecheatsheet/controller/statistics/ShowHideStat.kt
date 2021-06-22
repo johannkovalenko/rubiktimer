@@ -6,7 +6,7 @@ import com.example.rubikcubecheatsheet.model.CubeMode
 import com.example.rubikcubecheatsheet.model.statistics.Statistics
 
 object ShowHideStat {
-    fun Run(webView: WebView, statistics: Statistics?, cubeMode: CubeMode?) {
+    fun Run(webView: WebView, statistics: Statistics?) {
         if (webView.visibility == View.VISIBLE) {
             webView.visibility = View.GONE
             //textViewStatistics.text = ""

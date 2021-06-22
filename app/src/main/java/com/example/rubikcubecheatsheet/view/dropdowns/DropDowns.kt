@@ -2,11 +2,13 @@ package com.example.rubikcubecheatsheet.view.dropdowns;
 
 import android.R
 import android.view.View
+import android.webkit.WebView
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.LinearLayout
 import android.widget.Spinner
 import androidx.appcompat.app.AppCompatActivity
+import com.example.rubikcubecheatsheet.controller.Controller
 import com.example.rubikcubecheatsheet.controller.Search
 import com.example.rubikcubecheatsheet.controller.statistics.ShortStatistics
 import com.example.rubikcubecheatsheet.model.CubeMode
@@ -15,7 +17,7 @@ import com.example.rubikcubecheatsheet.model.enumerations.Mode
 import java.util.*
 import java.util.stream.Collectors
 
-public class DropDowns (val mainForm : AppCompatActivity, data_dict: Map<String, DB>, var search: Search, val cubeMode : CubeMode, var shortStatistics: ShortStatistics)
+public class DropDowns (val mainForm : AppCompatActivity, val controller: Controller,  data_dict: Map<String, DB>, var search: Search)
 {
     private val spinner : Spinner = mainForm.findViewById(com.example.rubikcubecheatsheet.R.id.spinner)
     private val spinnerMode : Spinner = mainForm.findViewById(com.example.rubikcubecheatsheet.R.id.spinnerMode)
@@ -51,8 +53,9 @@ public class DropDowns (val mainForm : AppCompatActivity, data_dict: Map<String,
         spinnerMode.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(adapterView: AdapterView<*>?, view: View, i: Int, l: Long) {
                 val item = spinnerMode!!.selectedItem as String
-                cubeMode.set(item)
-                shortStatistics!!.write()
+                controller!!.setCubeMode(item)
+                val temp : WebView = mainForm.findViewById(com.example.rubikcubecheatsheet.R.id.shortStat)
+                temp.loadDataWithBaseURL(null, controller!!.getShortStatistics().toString(), "text/html", "utf-8", null)
             }
 
             override fun onNothingSelected(adapterView: AdapterView<*>?) {}
