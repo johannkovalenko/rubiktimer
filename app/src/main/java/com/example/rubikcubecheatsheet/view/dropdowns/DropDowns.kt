@@ -10,8 +10,6 @@ import android.widget.Spinner
 import androidx.appcompat.app.AppCompatActivity
 import com.example.rubikcubecheatsheet.controller.Controller
 import com.example.rubikcubecheatsheet.controller.Search
-import com.example.rubikcubecheatsheet.controller.statistics.ShortStatistics
-import com.example.rubikcubecheatsheet.model.CubeMode
 import com.example.rubikcubecheatsheet.model.data.DB
 import com.example.rubikcubecheatsheet.model.enumerations.Mode
 import java.util.*
@@ -32,7 +30,7 @@ public class DropDowns (val mainForm : AppCompatActivity, val controller: Contro
 
     private fun fillDropdown(keys: List<String>, spinner: Spinner?) {
         val arrayAdapter = ArrayAdapter(mainForm, R.layout.simple_spinner_item, keys)
-        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        arrayAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
         spinner!!.adapter = arrayAdapter
     }
 
@@ -40,9 +38,9 @@ public class DropDowns (val mainForm : AppCompatActivity, val controller: Contro
 
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(adapterView: AdapterView<*>?, view: View, i: Int, l: Long) {
-                    mainForm.findViewById<LinearLayout>(com.example.rubikcubecheatsheet.R.id.layouthints).visibility = View.VISIBLE
-                    val item = spinner!!.selectedItem as String
-                    search!!.Run(item)
+                mainForm.findViewById<LinearLayout>(com.example.rubikcubecheatsheet.R.id.layouthints).visibility = View.VISIBLE
+                val item = spinner.selectedItem as String
+                search.Run(item)
             }
 
             override fun onNothingSelected(adapterView: AdapterView<*>?) {}
@@ -52,10 +50,10 @@ public class DropDowns (val mainForm : AppCompatActivity, val controller: Contro
     private fun spinnerModeSetListener() {
         spinnerMode.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(adapterView: AdapterView<*>?, view: View, i: Int, l: Long) {
-                val item = spinnerMode!!.selectedItem as String
-                controller!!.setCubeMode(item)
+                val item = spinnerMode.selectedItem as String
+                controller.setCubeMode(item)
                 val temp : WebView = mainForm.findViewById(com.example.rubikcubecheatsheet.R.id.shortStat)
-                temp.loadDataWithBaseURL(null, controller!!.getShortStatistics().toString(), "text/html", "utf-8", null)
+                temp.loadDataWithBaseURL(null, controller.getShortStatistics().toString(), "text/html", "utf-8", null)
             }
 
             override fun onNothingSelected(adapterView: AdapterView<*>?) {}

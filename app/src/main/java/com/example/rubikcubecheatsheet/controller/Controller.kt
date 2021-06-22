@@ -7,21 +7,16 @@ import com.example.rubikcubecheatsheet.model.enumerations.Mode
 import com.example.rubikcubecheatsheet.model.statistics.Statistics
 import com.example.rubikcubecheatsheet.model.timer.Timer
 import java.io.File
-import java.lang.StringBuilder
 import java.time.LocalDateTime
+import kotlin.text.StringBuilder
 
 class Controller (private val folder: File?){
     private val cubeMode = CubeMode(Mode.Speed)
     private val statistics: Statistics = Statistics(cubeMode, folder)
-    private val shortStatistics: ShortStatistics
-    private val timer : Timer
+    private val shortStatistics = ShortStatistics(statistics)
+    private val timer = Timer(folder, cubeMode, statistics)
 
     public var timeMode = TimeMode.OFF
-
-    init {
-        shortStatistics = ShortStatistics(statistics)
-        timer = Timer(folder, cubeMode, statistics)
-    }
 
     //interim
     public fun GetStatistics() : Statistics { return statistics }
@@ -36,10 +31,10 @@ class Controller (private val folder: File?){
         val lastEntry = statistics!!.getDateTimeOfLastEntry()
         val beforeTime = LocalDateTime.now().minusMinutes(30)
 
-        if (lastEntry.isBefore(beforeTime))
-            return "Training"
+        return if (lastEntry.isBefore(beforeTime))
+            "Training"
         else
-            return "Reject"
+            "Reject"
     }
 
     public fun setCubeMode(strMode : String) {
@@ -48,10 +43,20 @@ class Controller (private val folder: File?){
 
     public fun startRecord() : Boolean {
         if (timeMode == TimeMode.OFF) {
-            GetTimer().start()
+            timer.start()
             timeMode = TimeMode.ON
             return true
         }
         else return false
+    }
+
+    public fun confirm(secondsToAdd : Float, keepMode : Boolean) : String {
+        if (timeMode != TimeMode.CONFIRM)
+            return "SKIP"
+        else {
+            timeMode = TimeMode.OFF
+            timer.confirm(secondsToAdd, keepMode)
+            return getShortStatistics().toString()
+        }
     }
 }

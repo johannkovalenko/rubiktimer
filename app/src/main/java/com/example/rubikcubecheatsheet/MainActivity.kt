@@ -35,7 +35,10 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
-        hideTitleBar()
+        super.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
+        supportActionBar!!.hide()
+
         setContentView(R.layout.activity_main)
 
         val labels = Labels(this)
@@ -49,11 +52,9 @@ class MainActivity : AppCompatActivity() {
         search = Search(data_dict, labels, hintImages)
         this.controller = Controller(getExternalFilesDir(null))
 
-        val temp : WebView = findViewById(R.id.shortStat)
-        temp.loadDataWithBaseURL(null, controller!!.getShortStatistics().toString(), "text/html", "utf-8", null)
+        findViewById<WebView>(R.id.shortStat).loadDataWithBaseURL(null, controller!!.getShortStatistics().toString(), "text/html", "utf-8", null)
 
-
-        this.confirmButtons = ConfirmButtons(this, controller!!)
+        this.confirmButtons = ConfirmButtons(this)
         this.dropDowns = DropDowns(this, controller!!, data_dict, search!!)
     }
 
@@ -61,24 +62,21 @@ class MainActivity : AppCompatActivity() {
         val goOn : Boolean = controller!!.startRecord()
 
         if (goOn){
-            val start = findViewById<Button>(R.id.startRecord)
-            start.visibility = View.INVISIBLE
+            findViewById<Button>(R.id.startRecord).visibility = View.INVISIBLE
             confirmButtons!!.hide("Running")
             window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
             findViewById<ConstraintLayout>(R.id.mainLayout).setBackgroundColor(Color.RED)
         }
-
     }
 
     fun stopRecord(view: View) {
-        val start = findViewById<Button>(R.id.startRecord)
         if (controller!!.timeMode != TimeMode.ON) {
             ShowHide.run(this)
             return
         }
         controller!!.timeMode = TimeMode.CONFIRM
-        start.visibility = View.VISIBLE
-        confirmButtons!!.show(controller!!.GetTimer().stop())
+        findViewById<Button>(R.id.startRecord).visibility = View.VISIBLE
+        confirmButtons!!.show(controller!!.GetTimer().stop(), controller!!.trainingOrReject())
         window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         findViewById<ConstraintLayout>(R.id.mainLayout).setBackgroundResource(R.drawable.background2)
     }
@@ -94,50 +92,35 @@ class MainActivity : AppCompatActivity() {
             controller!!.GetTimer().reject()
 
         confirmButtons!!.hide("Rejected")
-        val temp : WebView = findViewById(R.id.shortStat)
-        temp.loadDataWithBaseURL(null, controller!!.getShortStatistics().toString(), "text/html", "utf-8", null)
+        findViewById<WebView>(R.id.shortStat).loadDataWithBaseURL(null, controller!!.getShortStatistics().toString(), "text/html", "utf-8", null)
     }
 
     fun changeCategory(view: View) {
-        if (controller!!.timeMode != TimeMode.CONFIRM) return
-        controller!!.timeMode = TimeMode.OFF
-        controller!!.GetTimer().confirm(0f, false)
-        confirmButtons!!.hide("ChangedCategory")
-        val temp : WebView = findViewById(R.id.shortStat)
-        temp.loadDataWithBaseURL(null, controller!!.getShortStatistics().toString(), "text/html", "utf-8", null)
+        val text = controller!!.confirm(0f, false)
+        UpdateShortStat(text, "ChangedCategory")
     }
 
     fun addTwoSeconds(view: View) {
-        if (controller!!.timeMode != TimeMode.CONFIRM) return
-        controller!!.timeMode = TimeMode.OFF
-        controller!!.GetTimer().confirm(2f, true)
-        confirmButtons!!.hide("Added Two")
-        val temp : WebView = findViewById(R.id.shortStat)
-        temp.loadDataWithBaseURL(null, controller!!.getShortStatistics().toString(), "text/html", "utf-8", null)
-    }
+        val text = controller!!.confirm(2f, true)
+        UpdateShortStat(text, "Added Two") }
 
     fun confirm(view: View) {
-        if (controller!!.timeMode != TimeMode.CONFIRM) return
-        controller!!.timeMode = TimeMode.OFF
-        controller!!.GetTimer().confirm(0f, true)
-        confirmButtons!!.hide("Confirmed")
-        val temp : WebView = findViewById(R.id.shortStat)
-        temp.loadDataWithBaseURL(null, controller!!.getShortStatistics().toString(), "text/html", "utf-8", null)
+        val text = controller!!.confirm(0f, true)
+        UpdateShortStat(text, "Confirmed")
+    }
+
+    private fun UpdateShortStat(text : String, message : String) {
+        if (text == "SKIP") return
+
+        confirmButtons!!.hide(message)
+        findViewById<WebView>(R.id.shortStat).loadDataWithBaseURL(null, text, "text/html", "utf-8", null)
     }
 
     fun showStat(view: View) {
-        val generateButton = findViewById<Button>(R.id.generate)
-        val start = findViewById<Button>(R.id.startRecord)
         ShowHideStat.Run(findViewById(R.id.textViewStatistics), controller!!.GetStatistics())
 
-        generateButton.visibility = if (generateButton.visibility == View.INVISIBLE) View.VISIBLE else View.INVISIBLE
-        start.visibility = if(start.visibility == View.INVISIBLE) View.VISIBLE else View.INVISIBLE
-    }
-
-    fun hideTitleBar() {
-        super.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
-        supportActionBar!!.hide()
+        findViewById<Button>(R.id.generate).visibility = if (findViewById<Button>(R.id.generate).visibility == View.INVISIBLE) View.VISIBLE else View.INVISIBLE
+        findViewById<Button>(R.id.startRecord).visibility = if(findViewById<Button>(R.id.startRecord).visibility == View.INVISIBLE) View.VISIBLE else View.INVISIBLE
     }
 
     fun eventGenerate(view: View) {
