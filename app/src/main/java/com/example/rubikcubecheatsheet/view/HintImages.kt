@@ -11,7 +11,8 @@ import com.example.rubikcubecheatsheet.R.drawable
 import java.util.*
 
 class HintImages(var mainForm: MainActivity) {
-    private var images: MutableMap<String, ImageView> = HashMap()
+    private val images: MutableMap<String, ImageView> = HashMap()
+    private val layoutHints = mainForm.findViewById<LinearLayout>(R.id.layouthints)
 
     public fun FillImages() {
         val files = drawable::class.java.fields
@@ -28,7 +29,6 @@ class HintImages(var mainForm: MainActivity) {
     }
 
     public fun FillPictureBox(pictures: List<String?>) {
-        val layoutHints = mainForm.findViewById<LinearLayout>(R.id.layouthints)
         layoutHints!!.removeAllViews()
 
         for (picture in pictures) {
@@ -45,10 +45,13 @@ class HintImages(var mainForm: MainActivity) {
     }
 
     public fun showHide() {
-        val layoutHints = mainForm.findViewById<LinearLayout>(R.id.layouthints)
         when (layoutHints.visibility) {
             View.VISIBLE -> layoutHints.visibility = View.INVISIBLE
             View.INVISIBLE, View.GONE -> layoutHints.visibility = View.VISIBLE
         }
+    }
+
+    public fun hide() {
+        layoutHints.visibility = View.INVISIBLE
     }
 }

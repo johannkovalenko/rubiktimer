@@ -13,6 +13,13 @@ class ConfirmButtons (mainForm : AppCompatActivity) {
     private val change  = mainForm.findViewById<Button>(R.id.changecategory)
     private val addTwo  = mainForm.findViewById<Button>(R.id.addtwoseconds)
 
+    public fun showStart() {
+        start.visibility = View.VISIBLE
+    }
+
+    public fun hideStart() {
+        start.visibility = View.INVISIBLE
+    }
     public fun show(message: String, rejectButtonText : String) {
         start.text = message
 
