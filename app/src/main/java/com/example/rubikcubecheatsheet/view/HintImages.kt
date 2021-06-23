@@ -4,17 +4,18 @@ import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import com.example.rubikcubecheatsheet.MainActivity
 import com.example.rubikcubecheatsheet.R
 import com.example.rubikcubecheatsheet.R.drawable
 import java.util.*
 
-class HintImages(var mainForm: MainActivity) {
+class HintImages(var mainForm: AppCompatActivity) {
     private val images: MutableMap<String, ImageView> = HashMap()
     private val layoutHints = mainForm.findViewById<LinearLayout>(R.id.layouthints)
 
-    public fun FillImages() {
+    init {
         val files = drawable::class.java.fields
         for (field in files) {
             try {

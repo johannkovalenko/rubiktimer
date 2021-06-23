@@ -9,10 +9,7 @@ import com.example.rubikcubecheatsheet.model.data.Data
 import com.example.rubikcubecheatsheet.model.enumerations.Mode
 import com.example.rubikcubecheatsheet.model.statistics.Statistics
 import com.example.rubikcubecheatsheet.model.timer.Timer
-import com.example.rubikcubecheatsheet.view.ConfirmButtons
-import com.example.rubikcubecheatsheet.view.HintImages
-import com.example.rubikcubecheatsheet.view.MainBoard
-import com.example.rubikcubecheatsheet.view.WebViews
+import com.example.rubikcubecheatsheet.view.*
 import com.example.rubikcubecheatsheet.view.labels.Labels
 import java.io.File
 import java.time.LocalDateTime
@@ -23,11 +20,7 @@ import kotlin.text.StringBuilder
 class Controller (
         private val resources : Resources,
         folder: File,
-        labels : Labels,
-        private val hintImages: HintImages,
-        private val confirmButtons: ConfirmButtons,
-        private val mainBoard: MainBoard,
-        private val webViews: WebViews
+        private val controls : Controls
         ) {
 
     private val data: List<DB> = ArrayList()
@@ -43,10 +36,10 @@ class Controller (
 
     init {
         Data().Prepare(this.resources, data, data_dict)
-        generator = Generator(data, labels)
-        search = Search(data_dict, labels)
+        generator = Generator(data, controls.labels)
+        search = Search(data_dict, controls.labels)
 
-        webViews.updateShortStat(shortStatistics.write())
+        controls.webViews.updateShortStat(shortStatistics.write())
     }
 
     public fun getShortStatistics() : StringBuilder {
@@ -71,21 +64,21 @@ class Controller (
         if (timeMode == TimeMode.OFF) {
             timer.start()
             timeMode = TimeMode.ON
-            confirmButtons.hide("Running")
-            mainBoard.redBackground()
-            confirmButtons.hideStart()
+            controls.confirmButtons.hide("Running")
+            controls.mainBoard.redBackground()
+            controls.confirmButtons.hideStart()
         }
     }
 
     public fun stopRecord() {
         if (timeMode != TimeMode.ON) {
-            hintImages.showHide()
+            controls.hintImages.showHide()
         }
         else {
             timeMode = TimeMode.CONFIRM
-            confirmButtons.show(timer.stop(), trainingOrReject())
-            mainBoard.standardBackground()
-            confirmButtons.showStart()
+            controls.confirmButtons.show(timer.stop(), trainingOrReject())
+            controls.mainBoard.standardBackground()
+            controls.confirmButtons.showStart()
         }
     }
 
@@ -95,8 +88,8 @@ class Controller (
 
         timeMode = TimeMode.OFF
         timer.confirm(secondsToAdd, keepMode)
-        confirmButtons.hide(message)
-        webViews.updateShortStat(shortStatistics.write())
+        controls.confirmButtons.hide(message)
+        controls.webViews.updateShortStat(shortStatistics.write())
     }
 
     public fun reject() {
@@ -110,17 +103,17 @@ class Controller (
         if (lastEntry.isAfter(beforeTime))
             timer.reject()
 
-        confirmButtons!!.hide("Rejected")
-        webViews.updateShortStat(shortStatistics.write())
+        controls.confirmButtons!!.hide("Rejected")
+        controls.webViews.updateShortStat(shortStatistics.write())
     }
 
     public fun generate() {
-        hintImages.FillPictureBox(generator.run())
-        hintImages.hide()
+        controls.hintImages.FillPictureBox(generator.run())
+        controls.hintImages.hide()
     }
 
     public fun search(item : String) {
-        hintImages.FillPictureBox(search.Run(item))
+        controls.hintImages.FillPictureBox(search.Run(item))
     }
 
     public fun getDataDict() : List<String> {
@@ -142,6 +135,6 @@ class Controller (
         sb.append("</body>")
         sb.append("</html>")
 
-        webViews.updateStat(sb)
+        controls.webViews.updateStat(sb)
     }
 }

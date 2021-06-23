@@ -4,34 +4,23 @@ import android.os.Bundle
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import com.example.rubikcubecheatsheet.controller.Controller
-import com.example.rubikcubecheatsheet.view.*
-import com.example.rubikcubecheatsheet.view.labels.Labels
+import com.example.rubikcubecheatsheet.view.Controls
+import com.example.rubikcubecheatsheet.view.DropDowns
 
 class MainActivity : AppCompatActivity() {
 
     private var controller : Controller? = null
-    private var confirmButtons: ConfirmButtons? = null
-    private var dropDowns: DropDowns? = null
-    private var hintImages : HintImages? = null
-    private var mainBoard : MainBoard? = null
-    private var webViews : WebViews? = null
+    private var controls : Controls? = null
+    private var dropDowns : DropDowns? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         HideTitleBar()
         setContentView(R.layout.activity_main)
 
-        val labels = Labels(this)
-
-        hintImages = HintImages(this)
-        hintImages!!.FillImages()
-        mainBoard = MainBoard(this)
-        confirmButtons = ConfirmButtons(this)
-        webViews = WebViews(this)
-
-        controller = Controller(this.resources, getExternalFilesDir(null)!!, labels, hintImages!!, confirmButtons!!, mainBoard!!, webViews!!)
+        controls = Controls(this)
+        controller = Controller(this.resources, getExternalFilesDir(null)!!, controls!!)
         dropDowns = DropDowns(this, controller!!)
-
     }
 
     private fun HideTitleBar() {

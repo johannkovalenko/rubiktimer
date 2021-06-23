@@ -5,10 +5,11 @@ import android.graphics.drawable.GradientDrawable
 import android.view.View
 import android.widget.TableLayout
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import com.example.rubikcubecheatsheet.MainActivity
 import com.example.rubikcubecheatsheet.R
 
-class Labels(var mainForm: MainActivity) {
+class Labels(var mainForm: AppCompatActivity) {
     private val labels = Array(7) { arrayOfNulls<TextView>(5) }
     private val createLabel: CreateLabel = CreateLabel(mainForm)
     private val row = Row(mainForm, createLabel, labels)

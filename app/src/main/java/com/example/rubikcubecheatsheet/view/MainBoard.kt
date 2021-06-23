@@ -1,7 +1,6 @@
 package com.example.rubikcubecheatsheet.view
 
 import android.graphics.Color
-import android.view.Window
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout

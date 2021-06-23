@@ -5,13 +5,15 @@ import android.graphics.drawable.GradientDrawable;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.rubikcubecheatsheet.MainActivity;
 
 class CreateLabel
 {
-    MainActivity myForm;
+    AppCompatActivity myForm;
 
-    public CreateLabel (MainActivity myForm)
+    public CreateLabel (AppCompatActivity myForm)
     {
         this.myForm = myForm;
     }

@@ -4,15 +4,17 @@ import android.view.View;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.rubikcubecheatsheet.MainActivity;
 
 class Row
 {
-    MainActivity myForm;
+    AppCompatActivity myForm;
     CreateLabel createLabel;
     TextView[][]    labels;
 
-    public Row (MainActivity myForm, CreateLabel createLabel, TextView[][] labels)
+    public Row (AppCompatActivity myForm, CreateLabel createLabel, TextView[][] labels)
     {
         this.myForm = myForm;
         this.createLabel = createLabel;
