@@ -1,4 +1,4 @@
-package com.example.rubikcubecheatsheet.view.dropdowns;
+package com.example.rubikcubecheatsheet.view;
 
 import android.R
 import android.view.View
@@ -9,13 +9,11 @@ import android.widget.LinearLayout
 import android.widget.Spinner
 import androidx.appcompat.app.AppCompatActivity
 import com.example.rubikcubecheatsheet.controller.Controller
-import com.example.rubikcubecheatsheet.controller.Search
-import com.example.rubikcubecheatsheet.model.data.DB
 import com.example.rubikcubecheatsheet.model.enumerations.Mode
 import java.util.*
 import java.util.stream.Collectors
 
-public class DropDowns (val mainForm : AppCompatActivity, val controller: Controller,  data_dict: Map<String, DB>, var search: Search)
+public class DropDowns (val mainForm : AppCompatActivity, val controller: Controller)
 {
     private val spinner : Spinner = mainForm.findViewById(com.example.rubikcubecheatsheet.R.id.spinner)
     private val spinnerMode : Spinner = mainForm.findViewById(com.example.rubikcubecheatsheet.R.id.spinnerMode)
@@ -24,7 +22,7 @@ public class DropDowns (val mainForm : AppCompatActivity, val controller: Contro
 
         spinnerSetListener()
         spinnerModeSetListener()
-        fillDropdown(ArrayList(data_dict.keys), spinner)
+        fillDropdown(controller.getDataDict(), spinner)
         fillDropdown(EnumSet.allOf(Mode::class.java).stream().map { obj: Mode -> obj.name }.collect(Collectors.toList()), spinnerMode)
     }
 
@@ -39,8 +37,8 @@ public class DropDowns (val mainForm : AppCompatActivity, val controller: Contro
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(adapterView: AdapterView<*>?, view: View, i: Int, l: Long) {
                 mainForm.findViewById<LinearLayout>(com.example.rubikcubecheatsheet.R.id.layouthints).visibility = View.VISIBLE
-                val item = spinner.selectedItem as String
-                search.Run(item)
+                val item =
+                controller!!.search(spinner.selectedItem as String)
             }
 
             override fun onNothingSelected(adapterView: AdapterView<*>?) {}

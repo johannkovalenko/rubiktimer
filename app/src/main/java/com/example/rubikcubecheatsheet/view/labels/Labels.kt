@@ -1,48 +1,31 @@
-package com.example.rubikcubecheatsheet.view.labels;
+package com.example.rubikcubecheatsheet.view.labels
 
-import android.view.View;
-import android.widget.*;
-import android.graphics.drawable.*;
-import android.graphics.*;
+import android.graphics.Color
+import android.graphics.drawable.GradientDrawable
+import android.view.View
+import android.widget.TableLayout
+import android.widget.TextView
+import com.example.rubikcubecheatsheet.MainActivity
+import com.example.rubikcubecheatsheet.R
 
-import com.example.rubikcubecheatsheet.MainActivity;
+class Labels(var mainForm: MainActivity) {
+    private val labels = Array(7) { arrayOfNulls<TextView>(5) }
+    private val createLabel: CreateLabel = CreateLabel(mainForm)
+    private val row = Row(mainForm, createLabel, labels)
 
-public class Labels
-{
-    TextView[][]    labels          = new TextView[7][5];
-    Row row;
-    CreateLabel createLabel;
-
-    MainActivity myForm;
-
-    public Labels(MainActivity myForm)
-    {
-        this.myForm = myForm;
-
-        createLabel = new CreateLabel(myForm);
-        row = new Row(myForm, createLabel, labels);
+    init {
+        val types = CreateLabelTypes().Run()
+        for (i in types.indices)
+            mainForm.findViewById<TableLayout>(R.id.board).addView(row.Create(i, types[i]))
     }
 
-    public void Create(TableLayout board)
-    {
-        LabelType[][] types = new CreateLabelTypes().Run();
-
-        for(int i=0; i<types.length;i++)
-            board.addView(row.Create(i, types[i]));
-    }
-
-    public void FillLabels(int color, int i, int j)
-    {
-        TextView label = labels[i][j];
+    fun FillLabels(color: Int, i: Int, j: Int) {
 
         if (color == Color.GRAY || color == 0)
-            label.setVisibility(View.INVISIBLE);
+            labels[i][j]!!.visibility = View.INVISIBLE
         else
-            label.setVisibility(View.VISIBLE);
+            labels[i][j]!!.visibility = View.VISIBLE
 
-        Drawable drawable = label.getBackground();
-        GradientDrawable shape = (GradientDrawable) drawable;
-
-        shape.setColor(color);
+        (labels[i][j]!!.background as GradientDrawable).setColor(color)
     }
 }

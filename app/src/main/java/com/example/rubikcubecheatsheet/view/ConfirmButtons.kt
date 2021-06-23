@@ -1,4 +1,4 @@
-package com.example.rubikcubecheatsheet.view.confirmbuttons
+package com.example.rubikcubecheatsheet.view
 
 import android.view.View
 import android.widget.Button

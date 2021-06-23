@@ -4,7 +4,7 @@ import com.example.rubikcubecheatsheet.model.data.DB;
 import com.example.rubikcubecheatsheet.view.labels.Labels;
 import java.util.*;
 
-class Builder
+public class Builder
 {
     private ArrayList<Fill> fills = new ArrayList<>();
 
