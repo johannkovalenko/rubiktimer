@@ -30,8 +30,8 @@ class RecordProgression(private val aoData : List<Data>){
         }
 
         for (i in aoData.indices)
-            if (aoData[i].topPerDay["top"]!!.avg < currentRecords[i]) {
-                currentRecords[i] = aoData[i].topPerDay["top"]!!.avg
+            if (aoData[i].days["top"]!!.avg < currentRecords[i]) {
+                currentRecords[i] = aoData[i].days["top"]!!.avg
                 counter++
             }
 

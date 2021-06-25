@@ -1,6 +1,5 @@
 package com.example.rubikcubecheatsheet.model.statistics.category
 
-import android.util.Log
 import com.example.rubikcubecheatsheet.model.Entry
 import com.example.rubikcubecheatsheet.model.enumerations.Mode
 import com.example.rubikcubecheatsheet.model.statistics.category.ao.day.Day
@@ -9,6 +8,7 @@ import com.example.rubikcubecheatsheet.model.statistics.category.ao.*
 import java.time.LocalDateTime
 
 class Category {
+    private val whichAO = 3
     private val entries         = mutableListOf<Entry>()
     private val mapDayCount     = mutableMapOf<LocalDateTime, Int>()
 
@@ -16,7 +16,7 @@ class Category {
 
     private var aoList          = arrayOf(AO5(aoData[0]), AO12(aoData[1]), AO100(aoData[2]), AO1000(aoData[3]))
 
-    private val printAO         = PrintAO(aoData, aoList)
+    private val printAO         = PrintAO(aoData, aoList, whichAO)
     //private val recordProgression = RecordProgression(aoData)
     private val top100 = Top100()
 
@@ -56,13 +56,15 @@ class Category {
 
         printAO.percentilesHeader(sb)
 
-        cumulateAndPercent(aoData[2].topPerDay["current"]!!.percentiles)
-        printAO.percentilesBody(sb, "current")
 
-        val dateList : List<String> = aoData[2].topPerDay.keys.toList()
+        cumulativeAndPercent(aoData[whichAO].days["current"]!!.percentiles)
+        printAO.allCellsPerLine(sb, "current")
+
+        val dateList : List<String> = aoData[0].days.keys.toList()
         for (index in dateList.size - 1 downTo 2) {
-            cumulateAndPercent(aoData[2].topPerDay[dateList[index]]!!.percentiles)
-            printAO.percentilesBody(sb, dateList[index])
+            if (aoData[whichAO].days.containsKey(dateList[index]))
+                cumulativeAndPercent(aoData[whichAO].days[dateList[index]]!!.percentiles)
+            printAO.allCellsPerLine(sb, dateList[index])
         }
 
         sb.append("</table>")
@@ -72,7 +74,7 @@ class Category {
         sb.append("<br><br>")
     }
 
-    private fun cumulateAndPercent(roundedSeconds : Map<Int, Day.Cumulative>) {
+    private fun cumulativeAndPercent(roundedSeconds : Map<Int, Day.Cumulative>) {
         var sum = 0
 
         roundedSeconds.forEach {

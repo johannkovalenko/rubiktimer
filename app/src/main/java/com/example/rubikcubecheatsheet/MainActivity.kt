@@ -2,7 +2,9 @@ package com.example.rubikcubecheatsheet
 
 import android.os.Bundle
 import android.view.*
+import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.rubikcubecheatsheet.controller.Controller
 import com.example.rubikcubecheatsheet.view.Controls
 import com.example.rubikcubecheatsheet.view.DropDowns
@@ -10,17 +12,22 @@ import com.example.rubikcubecheatsheet.view.DropDowns
 class MainActivity : AppCompatActivity() {
 
     private var controller : Controller? = null
-    private var controls : Controls? = null
-    private var dropDowns : DropDowns? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         HideTitleBar()
         setContentView(R.layout.activity_main)
 
-        controls = Controls(this)
-        controller = Controller(this.resources, getExternalFilesDir(null)!!, controls!!)
-        dropDowns = DropDowns(this, controller!!)
+        val controls = Controls(this)
+        controller = Controller(this.resources, getExternalFilesDir(null)!!, controls)
+        DropDowns(this, controller!!)
+
+//        val buttonShowStat = Button(this)
+//        buttonShowStat.text = "TEST"
+//        buttonShowStat.background = R.drawable.my_textviews
+//        buttonShowStat.setOnClickListener { controller!!.generate() }
+//        val mainLayout = findViewById<ConstraintLayout>(R.id.mainLayout)
+//        mainLayout.addView(buttonShowStat)
     }
 
     private fun HideTitleBar() {

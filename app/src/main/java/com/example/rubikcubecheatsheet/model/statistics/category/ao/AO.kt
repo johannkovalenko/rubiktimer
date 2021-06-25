@@ -13,8 +13,8 @@ abstract class AO (protected val data : Data)
     public abstract fun add(entry: Entry)
     public abstract fun colorScheme(dnf : Int) : String
 
-    private val top : Day = data.topPerDay["top"]!!
-    private val current : Day = data.topPerDay["current"]!!
+    private val top : Day = data.days["top"]!!
+    private val current : Day = data.days["current"]!!
 
     public val percentiles = intArrayOf(
             5, 6, 7, 8, 9, 10, 11, 12,
@@ -99,16 +99,16 @@ abstract class AO (protected val data : Data)
 
     protected fun topPerDay(entry : Entry) {
         val dataStr : String = entry.groupedDate.toStr()
-        if (!data.topPerDay.containsKey(dataStr))
-            data.topPerDay[dataStr] = Day()
+        if (!data.days.containsKey(dataStr))
+            data.days[dataStr] = Day()
 
-        data.topPerDay[dataStr]!!.amount++
-        data.topPerDay[dataStr]!!.topAvgEver = top.avg
-        data.topPerDay[dataStr]!!.topEntryEver = top.top
+        data.days[dataStr]!!.amount++
+        data.days[dataStr]!!.topAvgEver = top.avg
+        data.days[dataStr]!!.topEntryEver = top.top
 
         if (entry.seconds != 0f)
-            if (entry.seconds < data.topPerDay[dataStr]!!.top)
-                data.topPerDay[dataStr]!!.top = entry.seconds
+            if (entry.seconds < data.days[dataStr]!!.top)
+                data.days[dataStr]!!.top = entry.seconds
 
         data.currentPosition++
     }
@@ -163,7 +163,7 @@ abstract class AO (protected val data : Data)
 
         if (current.dnf > data.maxDNF) return
 
-        val day = data.topPerDay[entry.groupedDate.toStr()] ?: error("")
+        val day = data.days[entry.groupedDate.toStr()] ?: error("")
         if (current.avg < day.avg) {
             day.avg = current.avg
             day.sum = current.sum

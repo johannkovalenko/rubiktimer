@@ -5,13 +5,23 @@ import com.example.rubikcubecheatsheet.model.statistics.category.Data
 
 class AO1000(data : Data) : AO(data){
     public override fun add(entry: Entry) {
+//        super.arriving(entry)
+//        if (super.isBelowThreshold(entry))
+//            return
+//        super.leaving()
+//        super.setEver(entry, false)
+//        super.topPerDay(entry)
+//        super.setDay(entry, false)
+
         super.arriving(entry)
+        super.add(entry, percentiles)
         if (super.isBelowThreshold(entry))
             return
         super.leaving()
-        super.setEver(entry, false)
+        super.remove(data, percentiles)
+        super.setEver(entry, true)
         super.topPerDay(entry)
-        super.setDay(entry, false)
+        super.setDay(entry, true)
     }
 
     public override fun colorScheme(dnf : Int) : String {
