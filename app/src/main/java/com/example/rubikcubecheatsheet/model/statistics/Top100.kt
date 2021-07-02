@@ -1,6 +1,7 @@
 package com.example.rubikcubecheatsheet.model.statistics
 
 import com.example.rubikcubecheatsheet.model.Entry
+import com.example.rubikcubecheatsheet.model.enumerations.Mode
 import com.example.rubikcubecheatsheet.model.statistics.Format.toStr
 import com.example.rubikcubecheatsheet.model.statistics.Format.round
 import java.time.LocalDateTime
@@ -9,8 +10,10 @@ class Top100 {
     private val top100      = mutableListOf<Float>()
     private val top5History     = mutableMapOf<LocalDateTime, MutableList<Float>>()
 
-    public fun check(entry : Entry) {
-        if (top100.size >= 5 && entry.seconds < top100[4]) {
+    public fun add(entry : Entry) {
+        if (entry.dnf || entry.mode == Mode.Training)
+            return
+        else if (top100.size >= 5 && entry.seconds < top100[4]) {
             top5History[entry.whenDate] = mutableListOf()
 
             top100.add(entry.seconds)
@@ -26,6 +29,13 @@ class Top100 {
 
         if (top100.size > 100)
             top100.removeAt(top100.size - 1)
+    }
+
+    public fun get100thBestEntry() : Float {
+        return if (top100.size >= 100)
+            top100[99]
+        else
+            0f
     }
 
     public fun print (sb: StringBuilder, currentSeconds : List<Float>) {

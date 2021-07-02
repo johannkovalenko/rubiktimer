@@ -1,9 +1,10 @@
 package com.example.rubikcubecheatsheet.model.statistics.category.ao
 
 import com.example.rubikcubecheatsheet.model.Entry
+import com.example.rubikcubecheatsheet.model.statistics.Top100
 import com.example.rubikcubecheatsheet.model.statistics.category.Data
 
-class AO100(data : Data) : AO(data){
+class AO100(data : Data, top100: Top100) : AO(data, top100){
     public override fun add(entry: Entry) {
         super.arriving(entry)
         super.add(entry, percentiles)

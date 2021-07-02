@@ -5,10 +5,11 @@ import com.example.rubikcubecheatsheet.model.statistics.category.Data
 import com.example.rubikcubecheatsheet.model.statistics.Format.dateOnly
 import com.example.rubikcubecheatsheet.model.statistics.Format.round
 import com.example.rubikcubecheatsheet.model.statistics.Format.toStr
+import com.example.rubikcubecheatsheet.model.statistics.Top100
 import com.example.rubikcubecheatsheet.model.statistics.category.ao.day.Day
 import java.time.LocalDateTime
 
-abstract class AO (protected val data : Data)
+abstract class AO (protected val data : Data, protected val top100: Top100)
 {
     public abstract fun add(entry: Entry)
     public abstract fun colorScheme(dnf : Int) : String
@@ -105,6 +106,7 @@ abstract class AO (protected val data : Data)
         data.days[dataStr]!!.amount++
         data.days[dataStr]!!.topAvgEver = top.avg
         data.days[dataStr]!!.topEntryEver = top.top
+        data.days[dataStr]!!.one100thBest = top100.get100thBestEntry()
 
         if (entry.seconds != 0f)
             if (entry.seconds < data.days[dataStr]!!.top)

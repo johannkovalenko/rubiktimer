@@ -13,6 +13,9 @@ public class Day {
     var date: LocalDateTime = LocalDateTime.MIN
     var percentiles : MutableMap<Int, Cumulative> = sortedMapOf()
 
+    var one100thBest = Float.MAX_VALUE
+    var numberOfHundredBest = 0
+
     class Cumulative {
         var total = 1
         var addedTotal = 0

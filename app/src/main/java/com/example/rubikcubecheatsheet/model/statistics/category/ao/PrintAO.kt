@@ -21,7 +21,8 @@ class PrintAO (private val aoData : List<Data>, private val aoList : Array<AO>, 
                     break
                 sb.append("<th>$result</th>")
             }
-        sb.append("</tr>")
+
+        sb.append("<th></th><th>1st</th><th>100th</th><th>5</th><th>12</th><th>100</th><th>1000</th>")
     }
 
     public fun allCellsPerLine(sb : StringBuilder, date : String) {
@@ -34,6 +35,7 @@ class PrintAO (private val aoData : List<Data>, private val aoList : Array<AO>, 
         percentiles         (sb, date)
         amount              (sb, date)
         topEver             (sb, date)
+        one100thBest        (sb, date)
         bestAveragesEver    (sb, date)
 
         sb.append("</tr>")
@@ -96,5 +98,9 @@ class PrintAO (private val aoData : List<Data>, private val aoList : Array<AO>, 
 
     private fun amount(sb : StringBuilder, date : String) {
         sb.append("<td>${aoData[0].days[date]!!.amount}</td>")
+    }
+
+    private fun one100thBest(sb : StringBuilder, date : String) {
+        sb.append("<td>${aoData[0].days[date]!!.one100thBest.round()}</td>")
     }
 }
