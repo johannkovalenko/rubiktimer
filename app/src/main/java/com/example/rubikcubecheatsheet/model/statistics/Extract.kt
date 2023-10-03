@@ -1,5 +1,6 @@
 package com.example.rubikcubecheatsheet.model.statistics
 
+import android.util.Log
 import com.example.rubikcubecheatsheet.model.Entry
 import com.example.rubikcubecheatsheet.model.enumerations.Mode
 import com.example.rubikcubecheatsheet.model.statistics.Format.dateOnly
@@ -11,18 +12,25 @@ object Extract {
     private val beforeDate = LocalDateTime.now().minus(Period.ofWeeks(2))
 
     public fun Entry (line : String) : Entry? {
-        val split = line.split('\t')
+        try {
+            val split = line.split('\t')
 
-        if (split.size < 3) return null
+            if (split.size < 3) return null
 
-        val mode        = getMode(split[2]) ?: return null
-        val dnf         = split[1] == "DNF"
-        val dateTime    = split[0].toDate()
-        val record      = if (dnf) 0f else split[1].toFloat()
-        val date        = dateTime.dateOnly()
-        val grouped     = getGroupedDate(date)
+            val mode        = getMode(split[2]) ?: return null
+            val dnf         = split[1] == "DNF"
+            val dateTime    = split[0].toDate()
+            val record      = if (dnf) 0f else split[1].toFloat()
+            val date        = dateTime.dateOnly()
+            val grouped     = getGroupedDate(date)
 
-        return Entry(dateTime, date, record, mode, dnf, grouped)
+            return Entry(dateTime, date, record, mode, dnf, grouped)
+        }
+        catch (ex : Exception) {
+            Log.i("aaa", ex.message.toString())
+            return null
+        }
+
     }
 
     private fun getMode(rawMode : String) : Mode? {

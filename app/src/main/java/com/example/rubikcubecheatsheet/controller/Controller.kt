@@ -1,6 +1,7 @@
 package com.example.rubikcubecheatsheet.controller
 
 import android.content.res.Resources
+import android.util.Log
 import com.example.rubikcubecheatsheet.TimeMode
 import com.example.rubikcubecheatsheet.controller.statistics.ShortStatistics
 import com.example.rubikcubecheatsheet.model.CubeMode
@@ -32,13 +33,12 @@ class Controller (
     private val generator: Generator
     private val search: Search
 
-    public var timeMode = TimeMode.OFF
+    private var timeMode = TimeMode.OFF
 
     init {
         Data().Prepare(this.resources, data, data_dict)
         generator = Generator(data, controls.labels)
         search = Search(data_dict, controls.labels)
-
         controls.webViews.updateShortStat(shortStatistics.write())
     }
 
@@ -46,7 +46,7 @@ class Controller (
         return shortStatistics.write()
     }
 
-    public fun trainingOrReject() : String {
+    private fun trainingOrReject() : String {
         val lastEntry = statistics.getDateTimeOfLastEntry()
         val beforeTime = LocalDateTime.now().minusMinutes(30)
 
@@ -103,7 +103,7 @@ class Controller (
         if (lastEntry.isAfter(beforeTime))
             timer.reject()
 
-        controls.confirmButtons!!.hide("Rejected")
+        controls.confirmButtons.hide("Rejected")
         controls.webViews.updateShortStat(shortStatistics.write())
     }
 

@@ -1,5 +1,6 @@
 package com.example.rubikcubecheatsheet.model.statistics
 
+import android.util.Log
 import com.example.rubikcubecheatsheet.controller.file.RawFile
 import com.example.rubikcubecheatsheet.model.CubeMode
 import com.example.rubikcubecheatsheet.model.Entry
@@ -15,7 +16,7 @@ class Statistics(private val cubeMode: CubeMode, folder: File?) {
         for (singleMode in Mode.values())
             categories[singleMode] = Category()
 
-        val rawLines = RawFile().Read2(folder, "results.csv")
+        val rawLines : List<String> = RawFile().Read2(folder, "results.csv")
 
         for (line in rawLines)
             add(Extract.Entry(line) ?: continue)

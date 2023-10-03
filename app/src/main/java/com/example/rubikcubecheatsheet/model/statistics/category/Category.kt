@@ -46,8 +46,8 @@ class Category {
     public fun printShort(sb: StringBuilder) {
         sb.append("<table>")
 
-        for (ao : AO in aoList)
-            ao.printShort(sb)
+        //for (ao : AO in aoList)
+            aoList[2].printShort(sb)
 
         sb.append("</table>")
     }

@@ -3,21 +3,21 @@ y;x;x;x;y;x;x;x;y/x;y;y;x;y;x;x;y;y;x;y;x/7 slash/ark_i_i;gir_f_fx;u2;gir_f_fx
 x;y;y;y;y;y;y;y;x/x;x;x;x;x;y;y;x;x;x;x;x/8/fx;ark_rr_r_i_o;gir_rr_r_f
 x;y;x;y;y;y;y;y;x/y;x;x;x;x;y;x;x;x;y;x;x/A fish/ark_i_i;ark_u2
 y;y;x;y;y;x;x;x;y/x;x;x;y;y;x;x;x;x;y;y;x/ą square and dot 1/f_gir_fx;i_ark_o
-x;y;y;x;y;y;y;x;x/y;x;x;x;y;x;x;y;x;x;x;y/ą square and dot 2/gir_u2;ark_b_bx;gir_u2
+y;x;x;x;y;y;x;y;y/x;y;x;y;x;x;x;y;x;y;x;x/ą square and dot 2/a_square_and_dot2_new
 x;x;x;y;y;y;y;x;y/x;y;x;x;y;x;y;x;x;y;x;x/c 1/ark_i_o;b_gir_f;fx;bx
 y;y;x;x;y;x;y;y;x/x;x;x;x;x;x;x;y;x;y;y;y/c 2/rx_o;gir_f_fx;i_r
 y;y;y;y;y;x;y;x;y/x;x;x;x;y;x;x;x;x;x;y;x/F stealth/rr_i_rx_o;mx;i_ark_o
 y;x;y;y;y;y;y;x;y/x;y;x;x;y;x;x;x;x;x;x;x/H/ark_i_o;m;i_r_o_rrx
 x;x;x;y;y;y;x;x;x/y;y;x;y;y;x;x;x;x;y;x;y/I 1/f;i_ark_o;i_ark_o;fx
 x;x;x;y;y;y;x;x;x/x;y;x;x;y;x;y;x;y;y;x;y/I 2/gir_fx;opp_i_ark_o;opp_i_ark_o;gir_f
-x;y;x;x;y;x;x;y;x/x;x;x;x;x;x;y;y;y;y;y;y/I 3/rx_i;f2;i_d;f;u2;fx;o_d;fx2;o_r
-x;y;x;x;y;x;x;y;x/y;x;x;y;x;x;x;y;x;y;y;y/I 4/rx_o;fx_i_fx;opp_gir_fx_fx;r
+x;y;x;x;y;x;x;y;x/x;x;x;x;x;x;y;y;y;y;y;y/I 3/l3_new
+x;y;x;x;y;x;x;y;x/y;x;x;y;x;x;x;y;x;y;y;y/I 4/l4_new
 x;x;x;x;y;x;x;x;x/y;y;y;y;y;y;x;y;x;x;y;x/i dot 1/fx;u2;f2_gir_fx;u2;f_gir_fx
 x;x;x;x;y;x;x;x;x/x;y;x;y;y;y;y;y;x;y;y;x/i dot 2/gir_f_fx;u2;gir_f_fx2;u2;f
 x;x;x;y;y;y;x;x;y/x;y;y;y;y;x;y;x;x;x;x;x/L 1/gir_f_i;gir_fx_f;o_fx
 y;x;x;y;y;y;x;x;x/x;y;x;x;y;y;x;x;y;y;x;x/L 2/gir_fx;opp_ark_i_o;gir_f
 x;y;x;y;y;x;x;x;x/x;x;y;x;y;y;y;x;y;x;y;x/l 1/f;ark_i_o;ark_i_o;fx
-x;x;x;x;y;y;x;y;x/x;y;y;x;x;y;y;y;y;x;x;x/l 2/up_b_bx;r2;u2;f_gir_fx
+x;y;x;x;y;y;x;x;x/x;x;y;x;y;y;y;y;y;x;x;x/l 2/small_l_new
 x;y;x;x;y;y;x;x;x/y;x;y;y;y;y;x;y;x;x;x;x/l 3/gir_fx;opp_ark_i_o;opp_ark_i_o;gir_f
 x;y;y;x;y;y;x;x;x/x;x;x;y;y;x;y;y;x;x;x;y/O/rr;u2;gir_o_o;rrx
 x;y;y;x;y;y;x;x;y/y;x;x;y;y;x;x;y;x;x;x;x/P 1/rx_o;f;i_ark_o;fx_r
@@ -33,8 +33,8 @@ y;x;y;x;y;x;x;x;x/x;y;x;x;y;x;x;y;y;x;y;y/v 2/rx;u2;f;ark_i_o;f2;u2;f_r
 y;x;x;y;y;x;x;y;y/x;y;x;y;x;x;x;x;x;y;y;x/W/gir_o_o;gir_i_i;ark_b_bx
 y;x;y;x;y;x;y;x;y/x;y;x;x;y;x;x;y;x;x;y;x/x/mx;i;ark_i_o;m2;i_r_o_rrx
 x;y;x;y;y;x;x;x;y/y;x;x;x;y;x;x;x;y;y;y;x/Y/f_i;fx_gir_f;o_gir_fx
-y;x;y;x;y;y;x;y;x/x;y;x;x;x;x;x;y;y;x;x;y/y 1/bx_ark_bx;i;ark_i_o;r;b2
-x;y;x;x;y;y;y;x;y/y;x;y;x;y;x;x;y;x;x;x;x/y 2/o_rx;u2;ark_i_i;r2;b_fx_i_f_o;rx
+x;y;x;y;y;x;y;x;y/x;x;x;x;y;x;y;x;x;y;y;x/y 1/small_y_new
+x;y;x;y;y;x;y;x;y/y;x;y;x;y;x;x;x;x;x;y;x/y 2/small_y2_new
 y;x;x;y;y;y;x;x;y/x;y;y;x;y;x;x;x;y;x;x;x/Z/rx_f;ark_i_o;fx;i_r
 x;y;x;x;y;y;x;x;y/x;x;y;y;y;x;y;y;x;x;x;x/z 1/gir_fx;opp_i_ark_o;gir_f
 x;y;x;y;y;x;y;x;x/y;x;x;x;y;y;x;x;x;y;y;x/z 1.1/rr;i_gir_i;u2;rrx

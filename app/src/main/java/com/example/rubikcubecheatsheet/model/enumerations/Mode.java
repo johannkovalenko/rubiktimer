@@ -12,7 +12,8 @@ public enum Mode
     MirrorBlind,
     Touch,
     Rescramble,
-    Training
+    Training,
+    NoRegrip
 }
 
 //    FullFixed,

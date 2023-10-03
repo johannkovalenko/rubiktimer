@@ -28,34 +28,34 @@ abstract class AO (protected val data : Data, protected val top100: Top100)
 
     public fun printShort(sb: StringBuilder) {
         sb.append("<tr>")
-        sb.append("<td>${data.numberOfElements}:</td>")
+        //sb.append("<td>${data.numberOfElements}:</td>")
 
         val template = "class='withborder' style='background-color:"
 
         if (data.currentPosition >= data.numberOfElements) {
 
-            if (top.avg == Float.MAX_VALUE)
-                sb.append("<td></td>")
-            else {
-                sb.append("<td ${template}${colorScheme(top.dnf)}'>")
-                sb.append(top.avg.round())
-                if (LocalDateTime.now().dateOnly() == top.date)
-                    sb.append(":")
-                sb.append("</td>")
-            }
+//            if (top.avg == Float.MAX_VALUE)
+//                sb.append("<td></td>")
+//            else {
+//                sb.append("<td ${template}${colorScheme(top.dnf)}'>")
+//                sb.append(top.avg.round())
+//                if (LocalDateTime.now().dateOnly() == top.date)
+//                    sb.append(":")
+//                sb.append("</td>")
+//            }
 
             sb.append("<td ${template}${colorScheme(current.dnf)}'>")
             sb.append(current.avg.round())
             sb.append("</td>")
 
-            sb.append("<td>Next</td>")
-            for (offset: Int in 0..2) {
+//            sb.append("<td>Next</td>")
+            for (offset: Int in 0..5) {
                 val nextToBeat = data.entries[data.currentPosition - data.numberOfElements + offset].seconds
                 sb.append("<td>${nextToBeat.round()}</td>")
             }
         }
 
-        sb.append("<tr>")
+        sb.append("</tr>")
     }
 
     protected fun arriving(entry: Entry) {
